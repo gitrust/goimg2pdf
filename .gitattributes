@@ -1,0 +1,35 @@
+*.go text eol=lf
+
+*.md text eol=lf
+*.sh text eol=lf
+
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+Makefile text eol=lf
+Dockerfile text eol=lf
+
+.gitignore text eol=lf
+
+# Treat all .gitattributes files as text and ensure consistent line endings
+.gitattributes text eol=lf
+
+# Treat all .mod and .sum files as text and ensure consistent line endings
+*.mod text eol=lf
+*.sum text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.pdf binary
+*.zip binary
+*.tar.gz binary
+*.tgz binary
+*.bz2 binary
+*.xz binary
