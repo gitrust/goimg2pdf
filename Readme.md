@@ -6,6 +6,10 @@ as a single PDF file to my insurance.
 Somehow I didnt get IrfanView to accept installed PDF plugin and generate Multipage
 images. And I couldn't find any alternative in a hurry without installing new apps.
 
+## File support
+
+Currently JPEG files are supported only.
+
 ## Usage
 
 ![](goimg2pdf.gif)
@@ -39,3 +43,6 @@ Add image: images/5.jpg
 PDF created: output.pdf
 ```
 
+# Reference
+
+Project uses fpdf library from https://github.com/jung-kurt/gofpdf

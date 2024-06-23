@@ -24,7 +24,7 @@ func main() {
 
 	// define Usage
 	flag.Usage = func() {
-		fmt.Fprintf(flag.CommandLine.Output(), "Usage: goimg2pdf [options] jpeg-file\n\n")
+		fmt.Fprintf(flag.CommandLine.Output(), "Usage: goimg2pdf [options] jpeg-file [jpeg-file ...]\n\n")
 		fmt.Fprintf(flag.CommandLine.Output(), "Options:\n")
 		flag.PrintDefaults()
 	}
