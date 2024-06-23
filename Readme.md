@@ -1,12 +1,14 @@
 # Goimg2pdf
 
 This small piece of code sparked out of need to send a bunch of JPEG documents
-as a single PDF file via email to my insurance.
+as a single PDF file to my insurance.
 
 Somehow I didnt get IrfanView to accept installed PDF plugin and generate Multipage
 images. And I couldn't find any alternative in a hurry without installing new apps.
 
 ## Usage
+
+![](goimg2pdf.gif)
 
 ```
 Usage: goimg2pdf [options] jpeg-file
