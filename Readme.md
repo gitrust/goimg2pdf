@@ -15,7 +15,7 @@ Currently JPEG files are supported only.
 ![](goimg2pdf.gif)
 
 ```
-Usage: goimg2pdf [options] jpeg-file
+Usage: goimg2pdf [options] jpeg-file [jpeg-file ...]
 
 Options:
   -o string
