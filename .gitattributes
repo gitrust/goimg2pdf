@@ -1,4 +1,4 @@
-*.go text eol=lf
+
 
 *.md text eol=lf
 *.sh text eol=lf
@@ -10,15 +10,16 @@
 Makefile text eol=lf
 Dockerfile text eol=lf
 
+# git files
 .gitignore text eol=lf
-
-# Treat all .gitattributes files as text and ensure consistent line endings
 .gitattributes text eol=lf
 
-# Treat all .mod and .sum files as text and ensure consistent line endings
+# golang files
 *.mod text eol=lf
 *.sum text eol=lf
+*.go text eol=lf
 
+# Binaries
 *.png binary
 *.jpg binary
 *.jpeg binary
