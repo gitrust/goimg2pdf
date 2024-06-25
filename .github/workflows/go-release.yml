@@ -5,11 +5,14 @@ on:
     tags:
       - 'v*.*.*'
 
+permissions:
+  actions: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.1.7
 
     - name: Set up Go
       uses: actions/setup-go@v5
@@ -18,7 +21,7 @@ jobs:
 
     - name: Get the version
       id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
     - name: Build
       run: |
@@ -28,7 +31,7 @@ jobs:
 
     - name: Create Release
       id: create_release
-      uses: actions/create-release@v1
+      uses: actions/create-release@v1.1.4
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
