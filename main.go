@@ -7,9 +7,12 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/jung-kurt/gofpdf"
 )
+
+var validExtensions = []string{".jpg", ".png", ".jpeg"}
 
 const (
 	// A4 pdf page width in mm
@@ -24,7 +27,8 @@ func main() {
 
 	// define Usage
 	flag.Usage = func() {
-		fmt.Fprintf(flag.CommandLine.Output(), "Usage: goimg2pdf [options] jpeg-file [jpeg-file ...]\n\n")
+		fmt.Fprintf(flag.CommandLine.Output(), "Usage: goimg2pdf [options] img-file [img-file ...]\n\n")
+		fmt.Println("Accepted image extensions: [*.jpg, *.png, *,jpeg]")
 		fmt.Fprintf(flag.CommandLine.Output(), "Options:\n")
 		flag.PrintDefaults()
 	}
@@ -62,6 +66,10 @@ func generatePdf(outputPDF *string, fileArguments []string) {
 	var imagePaths []string = argsToFilePaths(fileArguments)
 
 	for _, imagePath := range imagePaths {
+		if !isValidExtension(filepath.Ext(imagePath)) {
+			log.Println("Unsupported file ", imagePath)
+			continue
+		}
 		addPdfPage(pdf, imagePath)
 	}
 
@@ -78,7 +86,32 @@ func addPdfPage(pdf *gofpdf.Fpdf, imagePath string) error {
 		return err
 	}
 
-	// determine image dimensions
+	// calculate new image dimensions to fit into page
+	newWidth, newHeight := calcPageDimensions(img)
+
+	// calculate X and Y positions to center image
+	x, y := calcCenterPosition(newWidth, newHeight)
+
+	// add image
+	pdf.ImageOptions(imagePath, x, y, newWidth, newHeight, false, gofpdf.ImageOptions{ReadDpi: true}, 0, "")
+
+	fmt.Println("Added image:", imagePath)
+
+	return nil
+}
+
+// Funktion, um zu prüfen, ob eine Erweiterung in der Liste enthalten ist
+func isValidExtension(extension string) bool {
+	for _, ext := range validExtensions {
+		if strings.EqualFold(ext, extension) {
+			return true
+		}
+	}
+	return false
+}
+
+// calculate new dimensions to fit image into page
+func calcPageDimensions(img image.Image) (width, height float64) {
 	imgWidth := img.Bounds().Dx()
 	imgHeight := img.Bounds().Dy()
 
@@ -93,17 +126,16 @@ func addPdfPage(pdf *gofpdf.Fpdf, imagePath string) error {
 	// calculate new image dimensions
 	newWidth := float64(imgWidth) * ratio
 	newHeight := float64(imgHeight) * ratio
+	return newWidth, newHeight
+}
 
+// calculate x and y center position of img
+func calcCenterPosition(width, height float64) (x, y float64) {
 	// calculate X and Y positions to center image
-	x := (PDF_PAGE_WIDTH - newWidth) / 2
-	y := (PDF_PAGE_HEIGHT - newHeight) / 2
+	x = (PDF_PAGE_WIDTH - width) / 2
+	y = (PDF_PAGE_HEIGHT - height) / 2
 
-	// add image
-	pdf.ImageOptions(imagePath, x, y, newWidth, newHeight, false, gofpdf.ImageOptions{ImageType: "JPG", ReadDpi: true}, 0, "")
-
-	fmt.Println("Added image:", imagePath)
-
-	return nil
+	return x, y
 }
 
 // Convert all file arguments to existing file paths
