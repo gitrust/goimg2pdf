@@ -8,14 +8,15 @@ images. And I couldn't find any alternative in a hurry without installing new ap
 
 ## File support
 
-Currently JPEG files are supported only.
+Currently JPEG and PNG files are supported only.
+File extensions (.jpg, .jpeg, .png).
 
 ## Usage
 
 ![](goimg2pdf.gif)
 
 ```
-Usage: goimg2pdf [options] jpeg-file [jpeg-file ...]
+Usage: goimg2pdf [options] img-file [img-file ...]
 
 Options:
   -o string
@@ -25,10 +26,10 @@ Options:
 ## Examples
 
 ```
-goimg2pdf 1.jpg 2.jpg
+goimg2pdf 1.jpeg 2.png
 
-Add image: 1.jpg
-Add image: 2.jpg
+Add image: 1.jpeg
+Add image: 2.png
 PDF created: output.pdf
 ```
 
