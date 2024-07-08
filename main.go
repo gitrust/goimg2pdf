@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"image"
+	"image/color"
 	"log"
 	"os"
 	"path/filepath"
@@ -161,9 +162,48 @@ func loadImage(imagePath string) (image.Image, error) {
 	}
 	defer file.Close()
 
+	// loads image into memory
 	img, _, err := image.Decode(file)
 	if err != nil {
 		return nil, err
 	}
 	return img, nil
+}
+
+// interface for image operations
+type ImageFilter interface {
+	Apply(img image.Image) image.Image
+}
+
+type GrayscaleFilter struct{}
+
+func (f GrayscaleFilter) Apply(img image.Image) image.Image {
+	bounds := img.Bounds()
+	grayImg := image.NewGray(bounds)
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			grayImg.Set(x, y, color.GrayModel.Convert(img.At(x, y)))
+		}
+	}
+	return grayImg
+}
+
+type BlackWhiteFilter struct {
+	Threshold uint8
+}
+
+func (f BlackWhiteFilter) Apply(img image.Image) image.Image {
+	bounds := img.Bounds()
+	bwImg := image.NewGray(bounds)
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			c := color.GrayModel.Convert(img.At(x, y)).(color.Gray)
+			if c.Y > f.Threshold {
+				bwImg.Set(x, y, color.White)
+			} else {
+				bwImg.Set(x, y, color.Black)
+			}
+		}
+	}
+	return bwImg
 }
